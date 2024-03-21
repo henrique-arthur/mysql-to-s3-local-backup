@@ -1,6 +1,6 @@
-import { S3Client } from '@aws-sdk/client-s3'
-import { Upload } from "@aws-sdk/lib-storage"
-import fs from 'fs'
+const { S3Client } = require('@aws-sdk/client-s3')
+const { Upload } = require("@aws-sdk/lib-storage")
+const fs = require('fs')
 
 const client = new S3Client({
   region: 'sa-east-1',
@@ -10,7 +10,7 @@ const client = new S3Client({
   }
 })
 
-export const uploadFileToS3 = async (filePath, fileName) => {
+const uploadFileToS3 = async (filePath, fileName) => {
   try {
     const upload = new Upload({
       client,
@@ -27,4 +27,15 @@ export const uploadFileToS3 = async (filePath, fileName) => {
   } catch (e) {
     console.log('Error', e)
   }
+}
+
+const fakeUploadFileToS3 = async (filePath, fileName) => {
+  setTimeout(() => {
+    console.log('Upload Success', fileName)
+  }, 2000)
+}
+
+module.exports = {
+  uploadFileToS3,
+  fakeUploadFileToS3
 }

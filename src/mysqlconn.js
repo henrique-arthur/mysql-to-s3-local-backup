@@ -1,8 +1,9 @@
-import mysqldump from 'mysqldump'
-import fs from 'fs'
+const mysqldump = require('mysqldump')
+const fs = require('fs')
 const DUMP_PATH = './dumps/dump.sql'
 
-export const getDumpFromMysql = async () => {
+const getDumpFromMysql = async () => {
+  console.log('fazendo dump')
   return await mysqldump({
     connection: {
       host: process.env.MYSQL_HOST,
@@ -14,14 +15,20 @@ export const getDumpFromMysql = async () => {
   }).then(() => {
     return DUMP_PATH
   }).catch((err) => {
+    console.log(err)
     throw err
   })
 }
   
-export const deleteFileAfterUpload = () => {
+const deleteFileAfterUpload = () => {
   fs.unlink(DUMP_PATH, (err) => {
     if (err) {
       throw err
     }
   })
+}
+
+module.exports = {
+  getDumpFromMysql,
+  deleteFileAfterUpload
 }
